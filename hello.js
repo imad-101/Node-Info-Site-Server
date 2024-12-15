@@ -1,50 +1,21 @@
-const http = require("http");
-const fs = require("fs");
+const express = require("express");
+const path = require("path");
+const app = express();
 
-const server = http.createServer((req, res) => {
-  res.setHeader("Content-Type", "text/html");
-
-  switch (req.url) {
-    case "/about":
-      fs.readFile("about.html", (err, data) => {
-        if (err) {
-          console.log(err);
-        } else {
-          res.end(data);
-        }
-      });
-      break;
-    case "/":
-      fs.readFile("index.html", (err, data) => {
-        if (err) {
-          console.log(err);
-        } else {
-          res.end(data);
-        }
-      });
-      break;
-    case "/contact":
-      fs.readFile("contact.html", (err, data) => {
-        if (err) {
-          console.log(err);
-        } else {
-          res.end(data);
-        }
-      });
-      break;
-    default:
-      fs.readFile("404.html", (err, data) => {
-        if (err) {
-          console.log(err);
-        } else {
-          res.end(data);
-        }
-      });
-
-      break;
-  }
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+app.get("/about", (req, res) => {
+  res.sendFile(path.join(__dirname, "about.html"));
+});
+app.get("/contact", (req, res) => {
+  res.sendFile(path.join(__dirname, "contact.html"));
 });
 
-server.listen(8080, "localhost", () => {
-  console.log("server is running");
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, "404.html"));
+});
+
+app.listen(3000, () => {
+  console.log("server is listening");
 });
