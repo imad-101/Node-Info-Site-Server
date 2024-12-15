@@ -1,4 +1,5 @@
 const express = require("express");
+require("dotenv").config();
 const path = require("path");
 const app = express();
 
@@ -16,6 +17,6 @@ app.use((req, res) => {
   res.status(404).sendFile(path.join(__dirname, "404.html"));
 });
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   console.log("server is listening");
 });
